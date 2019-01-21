@@ -5,7 +5,7 @@ class TaxRatio:
         self.ratio = ratio
         self.coupon = coupon
         
-class FccKTax:
+class FccKingTax:
     MAX_SALARY = 1000 * 1000 * 1000
     TAX_RATIO = [TaxRatio(0, 36000, 0.03, 0),
                  TaxRatio(36000 + 1, 144000, 0.1, 2520),
