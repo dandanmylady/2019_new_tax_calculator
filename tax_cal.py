@@ -54,6 +54,10 @@ class FccKingTax:
         social_money = self.get_social_money(salary)
         total_tax_free = social_money + self.TAX_THRESHOLD + taxfree
 
+        if salary <= total_tax_free:
+            print('You Win!')
+            return [0 for i in range(12)]
+        
         res = list()
         for i in range(1, 13):
             already_taxed = sum(res)
