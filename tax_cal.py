@@ -29,9 +29,9 @@ class FccKingTax:
     def __init__(self, old_ratio=.08, medical_ratio=.02, 
                  unemployment_ratio=.005, 
                  house_funding_ratio=.07, 
-                 insurance_upper_bound=21396, 
-                 house_found_upper_bound=21400):
-        self.three_insurance_ratio = house_funding_ratio + medical_ratio + unemployment_ratio
+                 insurance_upper_bound=31014,
+                 house_found_upper_bound=31014):
+        self.three_insurance_ratio = old_ratio + medical_ratio + unemployment_ratio
         self.house_funding_ratio = house_funding_ratio
         self.insurance_upper_bound = insurance_upper_bound
         self.house_found_upper_bound = house_found_upper_bound
@@ -40,11 +40,10 @@ class FccKingTax:
     def get_tax_ratio(cls, should_tax, new=True):
         ratios = cls.TAX_RATIO if new else cls.TAX_RATIO_BEFORE_2019
         for tax_ratio in ratios:
-                if tax_ratio.min <= should_tax <= tax_ratio.max:
-                    return tax_ratio
+            if tax_ratio.min <= should_tax <= tax_ratio.max:
+                return tax_ratio
         raise ValueError('Fail to find tax ratio for {}'.format(should_tax))
-        
-    
+
     def get_social_money(self, salary):
         insurance_base = self.insurance_upper_bound if salary > self.insurance_upper_bound else salary
         house_funding_base = self.house_found_upper_bound if salary > self.house_found_upper_bound else salary
@@ -56,23 +55,28 @@ class FccKingTax:
 
         if salary <= total_tax_free:
             print('You Win!')
-            return [0 for i in range(12)]
+            return [0 for _ in range(12)]
         
         res = list()
         for i in range(1, 13):
             already_taxed = sum(res)
             should_tax = (salary - total_tax_free) * i
             tax_ratio = self.get_tax_ratio(should_tax)
-            res.append(should_tax * tax_ratio.ratio - already_taxed - tax_ratio.coupon)
+            tax = should_tax * tax_ratio.ratio - already_taxed - tax_ratio.coupon
+            tax = round(tax)
+            res.append(tax)
         return res
-    
-    # Doesn't work
-#     def get_old_tax(self, salary):
-#         social_money = self.get_social_money(salary)
-#         print(social_money)
-#         should_tax = salary - social_money - self.TAX_THRESHOLD
-#         print(should_tax)
 
-#         tax_ratio = self.get_tax_ratio(should_tax, new=False)
-#         print(tax_ratio.ratio)
-#         return should_tax * tax_ratio.ratio - tax_ratio.coupon
+
+if __name__ == '__main__':
+    ft = FccKingTax()
+    salary = 50000
+    income = salary * 12
+    tax_per_month = ft.get_new_tax(salary, 3000)
+    total_tax = sum(tax_per_month)
+    tax_ratio = total_tax/(salary * 12)
+    tax_ratio = round(tax_ratio, 3)
+    print(f"income: {income}")
+    print(f"tax per month: {tax_per_month}")
+    print(f"total tax of year: {total_tax}")
+    print(f"total ratio: {tax_ratio}")
