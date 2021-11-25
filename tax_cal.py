@@ -4,7 +4,8 @@ class TaxRatio:
         self.max = upper_bound
         self.ratio = ratio
         self.coupon = coupon
-        
+
+
 class FccKingTax:
     MAX_SALARY = 1000 * 1000 * 1000
     TAX_RATIO = [TaxRatio(0, 36000, 0.03, 0),
@@ -12,8 +13,8 @@ class FccKingTax:
                  TaxRatio(144000 + 1, 300000, 0.2, 16920),
                  TaxRatio(300000 + 1, 420000, .25, 31920),
                  TaxRatio(420000 + 1, 660000, .3, 52920),
-                 TaxRatio(660000 +1, 960000, .35, 85920),
-                 TaxRatio(960000 +1, MAX_SALARY, .45, 181920)]
+                 TaxRatio(660000 + 1, 960000, .35, 85920),
+                 TaxRatio(960000 + 1, MAX_SALARY, .45, 181920)]
     TAX_THRESHOLD = 5000
 
     TAX_RATIO_BEFORE_2019 = [
